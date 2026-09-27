@@ -1,0 +1,107 @@
+# Démarrage d'un nouveau projet — Solution technique + prompt maître
+
+**Statut :** convention transverse
+
+Un projet non trivial commence idéalement ainsi :
+
+~~~text
+besoin
+→ Solution Technique
+→ prompt maître dédié
+→ bootstrap du dépôt
+→ développement par tranches
+~~~
+
+## 1. Solution Technique
+
+La Solution Technique décrit la cible avant de figer l'implémentation.
+
+Elle couvre selon le projet :
+
+- objectif et utilisateurs ;
+- périmètre V1 et hors périmètre ;
+- architecture générale ;
+- composants et responsabilités ;
+- flux de données ;
+- persistance ;
+- transport/réseau ;
+- sécurité ;
+- résilience et récupération ;
+- configuration ;
+- stratégie de tests ;
+- déploiement ;
+- roadmap en tranches ;
+- décisions encore ouvertes.
+
+La ST peut évoluer, mais évite que chaque session réinvente la direction.
+
+## 2. Prompt maître dédié
+
+Chaque projet important possède un prompt maître adapté.
+
+Il précise notamment :
+
+- rôle attendu de l'IA ;
+- objectif du projet ;
+- architecture et contraintes déjà acceptées ;
+- niveau d'explication attendu ;
+- hiérarchie des sources de vérité ;
+- workflow de développement ;
+- règles de sécurité ;
+- règles de tests et documentation ;
+- comportement avant/après une tranche ;
+- décisions nécessitant une validation explicite.
+
+Le prompt maître complète NexusPrincipia. Il ne recopie pas inutilement toutes les conventions communes.
+
+## 3. Bootstrap H0
+
+Le premier jalon crée surtout des frontières :
+
+- solution/projet/package ;
+- structure source et tests ;
+- CI ;
+- configuration minimale ;
+- documentation ;
+- conventions Git ;
+- host technique si la frontière réseau est déjà décidée.
+
+Éviter d'ajouter de la logique métier spéculative uniquement pour « remplir » le projet.
+
+## 4. Documentation initiale
+
+Structure indicative :
+
+~~~text
+README.md
+docs/
+├── architecture/
+├── continuity/
+├── decisions/
+├── tranches/
+└── development/
+src/
+tests/
+~~~
+
+Les conventions transverses restent dans NexusPrincipia. Le dossier development local contient surtout des liens et exceptions propres au projet.
+
+## 5. CI tôt
+
+La CI est installée au bootstrap.
+
+Elle vérifie ce que le projet considère bloquant : restore/install, build ou syntaxe, lint/analyse statique et tests.
+
+Elle devient un deuxième environnement de validation.
+
+## 6. Continuité dès le départ
+
+Créer un handoff courant dès le bootstrap pour qu'une nouvelle session puisse reprendre sans dépendre de la conversation d'origine.
+
+Voir [Session continuity](session-continuity.md).
+
+## 7. Règle finale
+
+La ST et le prompt maître ne servent pas à créer de la bureaucratie.
+
+Ils servent à rendre l'IA **rapide dans la bonne direction**.
