@@ -25,8 +25,11 @@ Le handoff contient :
 - tranche active ;
 - dernier jalon validé ;
 - VALIDATED ;
+- IMPLEMENTED / TECHNICALLY GREEN BUT REVIEW PENDING ;
 - IMPLEMENTED BUT NOT YET VALIDATED ;
 - DECIDED BUT NOT YET IMPLEMENTED ;
+- statut de la revue code / architecture ;
+- décisions ou corrections issues de cette revue ;
 - invariants ;
 - dette/temporaire volontaire ;
 - fichiers à lire ;
@@ -36,7 +39,14 @@ Le handoff contient :
 
 ## 3. Mise à jour continue
 
-Mettre à jour le handoff lorsqu'une étape change réellement l'état : décision acceptée, tranche implémentée, CI terminée, validation locale, correction importante ou changement de branche.
+Mettre à jour le handoff lorsqu'une étape change réellement l'état : décision
+acceptée, tranche implémentée, CI terminée, validation locale, revue
+code/architecture terminée, correction structurelle importante ou changement de
+branche.
+
+Une tranche techniquement verte mais dont la revue partagée n'a pas encore eu
+lieu doit être décrite explicitement comme telle. Elle ne devient pas
+`VALIDATED` uniquement parce que les tests passent.
 
 Le handoff décrit l'état. Git prouve le code.
 

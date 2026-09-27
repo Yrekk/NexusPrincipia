@@ -50,6 +50,10 @@ Il précise notamment :
 - règles de sécurité ;
 - règles de tests et documentation ;
 - comportement avant/après une tranche ;
+- cycle obligatoire implémentation → validation technique → revue code/architecture
+  → correction éventuelle → acceptation ;
+- pédagogie orientée arbitrage entre alternatives plutôt que restitution du
+  raisonnement de l'IA ;
 - décisions nécessitant une validation explicite.
 
 Le prompt maître complète NexusPrincipia. Il ne recopie pas inutilement toutes les conventions communes.
@@ -100,7 +104,24 @@ Créer un handoff courant dès le bootstrap pour qu'une nouvelle session puisse 
 
 Voir [Session continuity](session-continuity.md).
 
-## 7. Règle finale
+## 7. Revue avant fermeture d'une tranche
+
+Dès le bootstrap, le projet doit hériter du cycle transverse :
+
+~~~text
+implémenter
+→ tester / corriger
+→ revoir le code ensemble
+→ discuter les alternatives structurantes
+→ corriger la fondation si nécessaire
+→ accepter
+→ passer à la tranche suivante
+~~~
+
+Cette revue doit être proportionnée, mais ne doit pas disparaître au motif que
+les tests sont verts.
+
+## 8. Règle finale
 
 La ST et le prompt maître ne servent pas à créer de la bureaucratie.
 

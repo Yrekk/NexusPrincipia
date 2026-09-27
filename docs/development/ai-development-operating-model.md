@@ -107,14 +107,22 @@ Avant une tranche significative, présenter :
 
 - **Objectif** — ce que la tranche résout ;
 - **Ce qui sera construit** — fichiers, responsabilités et comportements ;
-- **Architecture** — où vit chaque responsabilité et pourquoi ;
+- **Architecture** — frontières nécessaires pour démarrer sans enfermer le projet ;
 - **Points critiques** — invariants, sécurité, persistance, compatibilité, effets de bord ;
 - **Tests** — ce qui prouvera la correction ;
-- **Question conceptuelle** — une courte question pour conserver la carte mentale du système.
+- **Décisions bloquantes** — uniquement celles qui doivent réellement être arbitrées avant de coder.
 
-Une réponse « je ne sais pas » est acceptable. La question sert à apprendre et à détecter une incompréhension.
+Le cadrage préalable doit permettre de construire dans la bonne direction, sans
+chercher à résoudre théoriquement tous les choix possibles avant d'avoir du code
+concret à examiner.
 
-Pour une décision architecturale non triviale, attendre la validation du développeur avant l'implémentation.
+Pour une décision architecturale non triviale et irréversible ou coûteuse à
+reprendre, attendre la validation du développeur avant l'implémentation.
+
+Les questions pédagogiques de type comparaison / compromis sont de préférence
+posées **pendant la revue après validation technique**, lorsque le développeur
+peut raisonner sur une implémentation réelle plutôt que deviner le raisonnement
+de l'assistante.
 
 ## 7. Implémentation
 
@@ -136,19 +144,125 @@ Lorsque l'IA dispose d'un accès GitHub autorisé et que le développeur lui con
 - elle re-vérifie le HEAD avant écriture ;
 - elle ne merge pas, ne promeut pas vers stable et ne déploie pas sans autorisation explicite.
 
-## 8. Revue de code ensemble
+## 8. Revue de code et d'architecture ensemble
 
-Le développeur n'a pas besoin de relire mécaniquement chaque ligne.
+La revue partagée est une **étape obligatoire avant l'acceptation d'une tranche
+de développement**.
 
-Il doit néanmoins pouvoir répondre à :
+Elle intervient après une première implémentation et sa validation technique :
 
-- où vit la nouvelle responsabilité ?
-- quel est le flux principal ?
-- quelles dépendances ont été introduites ?
-- quel invariant protège le test principal ?
-- où chercher si ce comportement casse demain ?
+~~~text
+implémentation
+→ tests / build / lint / smoke nécessaires
+→ correction des défauts observés
+→ revue ensemble
+→ éventuelle correction structurelle
+→ revalidation si nécessaire
+→ acceptation explicite
+~~~
 
-L'assistante explique les fichiers importants et leurs relations.
+Le développeur n'a pas besoin de relire mécaniquement chaque ligne. La revue
+doit lui faire parcourir les zones importantes et reconstruire la carte mentale
+du changement.
+
+L'assistante présente au minimum :
+
+- les fichiers réellement modifiés ;
+- la responsabilité de chacun ;
+- le flux principal avant / après ;
+- les dépendances introduites ou déplacées ;
+- les invariants protégés par les tests ;
+- le point où chercher si le comportement casse demain.
+
+### 8.1 Questions de choix plutôt que restitution
+
+La revue ne doit pas principalement demander :
+
+> « Pourquoi l'assistante a-t-elle choisi cette architecture ? »
+
+Elle doit plutôt placer le développeur en situation d'arbitrage :
+
+> « Ici, deux solutions sont crédibles : A et B. Laquelle choisirais-tu dans ce
+> contexte, et qu'est-ce qu'on gagne ou perd avec chacune ? »
+
+L'assistante :
+
+1. présente les alternatives réellement plausibles ;
+2. donne suffisamment de contexte pour raisonner ;
+3. laisse le développeur formuler son choix ;
+4. compare ensuite les conséquences à court et long terme ;
+5. explique son propre choix si nécessaire ;
+6. accepte qu'une meilleure décision émerge de la discussion.
+
+Une réponse différente de celle de l'assistante n'est pas une erreur si elle
+repose sur un compromis défendable.
+
+### 8.2 Objectif architectural
+
+Cette revue doit notamment détecter les choix qui fonctionnent aujourd'hui mais
+créeraient une dette structurelle disproportionnée demain.
+
+Exemple générique :
+
+~~~text
+besoin actuel
+→ SQLite suffit
+
+question de revue
+→ le métier doit-il dépendre directement de SQLite
+  ou d'une frontière de persistence plus abstraite ?
+
+conséquence
+→ conserver SQLite aujourd'hui
+→ sans rendre une future migration PostgreSQL équivalente à une réécriture
+~~~
+
+Une abstraction n'est pas justifiée uniquement par un futur hypothétique. Elle
+l'est lorsque son coût actuel reste raisonnable et qu'elle protège une frontière
+déjà pertinente.
+
+### 8.3 Ce qui se passe si la revue révèle un problème
+
+Si la revue découvre :
+
+- une mauvaise frontière ;
+- une dépendance trop concrète ;
+- un invariant mal placé ;
+- une évolution proche qui rendrait le choix actuel coûteux ;
+
+alors le problème structurel est corrigé **avant de fermer la tranche**, puis les
+validations nécessaires sont rejouées.
+
+Une amélioration utile mais non bloquante va au backlog.
+
+L'objectif est d'éviter :
+
+~~~text
+tranche N : choix fragile
+→ tranche N+1 construite dessus
+→ tranche N+2 découvre la dette
+→ refactor tardif
+~~~
+
+et de préférer :
+
+~~~text
+tranche N : implémentation
+→ tests
+→ revue
+→ correction de la fondation
+→ acceptation
+→ tranche N+1 sur une base saine
+~~~
+
+### 8.4 Proportionnalité
+
+Cette étape s'applique à chaque développement cohérent, mais sa profondeur reste
+proportionnée au changement.
+
+Une micro-correction peut recevoir une revue de quelques phrases. Une nouvelle
+boundary de persistence, un mécanisme de recovery ou une architecture réseau
+méritent une vraie discussion de compromis.
 
 ## 9. Code lisible et commentaires
 
@@ -195,6 +309,9 @@ Une tranche est validée seulement si :
 - les tests pertinents sont verts ;
 - build/lint/analyse statique sont verts selon le projet ;
 - les smoke tests nécessaires sont verts ;
+- la revue de code / architecture partagée a eu lieu ;
+- les problèmes structurels bloquants révélés par cette revue ont été corrigés
+  et revalidés ;
 - documentation, tranche et handoff sont à jour ;
 - le développeur l'accepte explicitement.
 
@@ -255,32 +372,49 @@ Voir [Session continuity](session-continuity.md).
 
 ## 16. Definition of Done transverse
 
-Une fonctionnalité n'est pas finie simplement parce qu'elle compile.
+Une fonctionnalité n'est pas finie simplement parce qu'elle compile ou que ses
+tests sont verts.
 
 ~~~text
-conception comprise
+cadrage suffisant
 + code
 + tests
 + build/lint
++ smoke si nécessaire
++ revue code / architecture ensemble
++ compromis compris
++ corrections structurelles éventuelles
 + documentation
 + continuité
-+ validation réelle
++ acceptation explicite
 ~~~
 
 ## 17. Boucle cible
 
+Le cycle standard de chaque développement est :
+
 ~~~text
 besoin / expérience du développeur
 → analyse de l'existant
-→ proposition et challenge
-→ validation architecturale
+→ cadrage de la tranche
+→ arbitrage des seules décisions bloquantes
 → implémentation par petite tranche
-→ tests + CI
-→ revue et explication
-→ validation locale / smoke
-→ acceptation explicite
+→ commit/push lorsque autorisé
+→ tests + build/lint + smoke pertinents
+→ corrections jusqu'à état techniquement vert
+→ revue de code ensemble
+→ discussion des choix / alternatives / compromis
+→ correction structurelle éventuelle
+→ revalidation si le code change
+→ acceptation explicite du développeur
 → documentation + handoff à jour
 → tranche suivante
 ~~~
 
-Ce rythme est plus prudent qu'un « génère tout le projet », mais conserve contrôle, compréhension et résilience tout en allant beaucoup plus vite qu'une production entièrement manuelle.
+La revue intervient volontairement **avant** la fermeture de la tranche. Elle
+n'est pas un compte rendu tardif : c'est une dernière barrière contre les
+fondations fragiles avant que la tranche suivante ne construise dessus.
+
+Ce rythme est plus prudent qu'un « génère tout le projet », mais conserve
+contrôle, compréhension et résilience tout en allant beaucoup plus vite qu'une
+production entièrement manuelle.
