@@ -341,7 +341,7 @@ Prefer recording:
 - time;
 - optional reason when the actor overrides the suggestion.
 
-For operationally important identifiers, it is valid and often useful to preserve a human-readable label snapshot next to the stable identifier:
+For operationally important identifiers, it is valid and often useful to preserve a human-readable label snapshot next to the stable identifier. The shared rule is documented in [Audit identifiers and human-readable labels](audit-identifiers-and-labels.md):
 
 ~~~text
 ActorReference = "user:190992294"
