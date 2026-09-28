@@ -39,14 +39,11 @@ Le handoff contient :
 
 ## 3. Mise à jour continue
 
-Mettre à jour le handoff lorsqu'une étape change réellement l'état : décision
-acceptée, tranche implémentée, CI terminée, validation locale, revue
-code/architecture terminée, correction structurelle importante ou changement de
-branche.
+Mettre à jour le handoff lorsqu'une étape change réellement l'état de la tranche fonctionnelle : décision structurante acceptée, bloc significatif implémenté, validation importante, correction structurelle ou changement de branche.
 
-Une tranche techniquement verte mais dont la revue partagée n'a pas encore eu
-lieu doit être décrite explicitement comme telle. Elle ne devient pas
-`VALIDATED` uniquement parce que les tests passent.
+Ne pas réécrire le handoff après chaque micro-checkpoint ou chaque CI verte si cela n'améliore pas concrètement la reprise.
+
+Une tranche fonctionnelle techniquement verte mais dont la revue/validation finale n'a pas encore eu lieu doit être décrite explicitement comme telle. Elle ne devient pas `VALIDATED` uniquement parce que les tests passent.
 
 Le handoff décrit l'état. Git prouve le code.
 
