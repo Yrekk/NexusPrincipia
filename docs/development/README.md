@@ -4,7 +4,7 @@ This folder is the shared source of truth for development practices used across 
 
 ## Documents
 
-- [AI-assisted development operating model](ai-development-operating-model.md) — tranche-by-tranche collaboration with a mandatory post-validation code/architecture review before acceptance; trade-off questions are used to make architectural choices explicit rather than asking the developer to reproduce the AI's reasoning.
+- [AI-assisted development operating model](ai-development-operating-model.md) — one functional tranche per dedicated session, with fluid internal checkpoints, continuous testing and a targeted code/architecture review before tranche acceptance.
 - [Project bootstrap](project-bootstrap.md) — start non-trivial projects from an established Solution Technique and a dedicated master prompt.
 - [Session continuity](session-continuity.md) — handoff rules and inter-session recovery.
 - [Documentation conventions](documentation-conventions.md) — comments, local READMEs, ADRs and living documentation.
@@ -16,18 +16,18 @@ Project repositories should link here and keep only their local additions or exp
 
 ## Default development cycle
 
-Every coherent development follows the shared loop:
+Every functional tranche follows the shared loop:
 
 ~~~text
-scope
-→ implementation
+dedicated session
+→ light scope
+→ continuous implementation through internal checkpoints
 → technical validation and fixes
-→ shared code / architecture review
-→ trade-off discussion
+→ targeted code / architecture review
 → structural correction if needed
-→ explicit acceptance
-→ next tranche
+→ explicit tranche acceptance
+→ documentation / handoff
+→ new session for the next tranche
 ~~~
 
-Project repositories may add constraints, but should not skip the
-review-before-acceptance step.
+Internal checkpoints are not mini-tranches and do not require their own acceptance ceremony.
