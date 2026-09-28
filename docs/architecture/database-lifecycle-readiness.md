@@ -216,6 +216,8 @@ Do not add `Invalid` to every otherwise-proven state merely as a generic rejecti
 
 The selected classification does not erase the facts and does not itself mutate the database.
 
+If an authorized classification must survive a restart, persist that decision outside the inspected database/resource, in trusted control-plane state. Do not write the decision into an ambiguous or rejected database merely to remember that it was rejected. The durable-decision and invalidation rules are defined in [Inspection, classification and authorized choice](inspection-classification-authority.md).
+
 If `Invalid` is selected for an existing file, GameSaveSync or another project may conclude that no usable authoritative database is available and may offer a separate initialization workflow. That workflow must not silently overwrite the existing invalid resource.
 
 If the relevant database facts later change materially, re-inspect and require a fresh classification where ambiguity still exists.
