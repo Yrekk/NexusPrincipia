@@ -27,6 +27,7 @@ Elle couvre selon le projet :
 - transport/réseau ;
 - sécurité ;
 - résilience et récupération ;
+- lifecycle/readiness de la persistance lorsque la base porte une autorité importante ;
 - configuration ;
 - stratégie de tests ;
 - déploiement ;
@@ -128,7 +129,17 @@ Dès H0, appliquer la convention [Entrypoints et opérations administratives ré
 
 Un `Program.cs`, `main.py` ou équivalent ne doit pas devenir le propriétaire d'une capacité qui pourrait ensuite être appelée depuis l'Admin, une CLI ou un agent IA.
 
-## 9. Règle finale
+## 9. Lifecycle / readiness de la persistance
+
+Pour une application où la base porte une autorité importante, intégrer dès la ST le modèle partagé [Database lifecycle, readiness and explicit administrative choice](../architecture/database-lifecycle-readiness.md) :
+
+- état observé ;
+- readiness/mode opérationnel ;
+- actions explicites autorisées ;
+- posture fail-closed ;
+- stratégie de recovery.
+
+## 10. Règle finale
 
 La ST et le prompt maître ne servent pas à créer de la bureaucratie.
 

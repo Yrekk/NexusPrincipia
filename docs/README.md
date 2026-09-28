@@ -22,3 +22,4 @@ Do not maintain copied versions of the same generic development document in seve
 ## Architecture / operations references
 
 - [Debug & observability](architecture/debug-observability.md)
+- [Database lifecycle, readiness and explicit administrative choice](architecture/database-lifecycle-readiness.md)

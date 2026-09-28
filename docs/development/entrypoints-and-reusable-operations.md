@@ -224,3 +224,9 @@ entrypoint
 ~~~
 
 La règle porte sur la responsabilité, pas sur un framework particulier.
+
+## 9. Database lifecycle / readiness
+
+For database-backed applications, apply the shared [Database lifecycle, readiness and explicit administrative choice](../architecture/database-lifecycle-readiness.md) reference.
+
+In particular, keep observed database state, runtime readiness and chosen administrative action separate.
