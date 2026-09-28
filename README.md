@@ -46,6 +46,7 @@ Start with [docs/README.md](docs/README.md).
 
 - [Debug & observability reference](docs/architecture/debug-observability.md)
 - [Inspection, classification & authorized choice](docs/architecture/inspection-classification-authority.md)
+- [Structured inspection findings](docs/architecture/structured-inspection-findings.md)
 - [Database lifecycle & readiness](docs/architecture/database-lifecycle-readiness.md)
 
 ## Current scope

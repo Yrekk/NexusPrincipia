@@ -13,6 +13,8 @@ The application must not collapse those three concerns into one automatic startu
 
 When the observed facts are compatible with more than one legitimate lifecycle classification, also apply [Inspection, classification and authorized choice](inspection-classification-authority.md). In that case the inspector may suggest a state, but the effective classification remains an authorized choice constrained by the facts.
 
+Database explanations follow [Structured inspection findings](structured-inspection-findings.md). Reuse the canonical database finding codes instead of exposing provider/application prose as the contract.
+
 ## 1. Separate three concepts
 
 A robust runtime keeps these dimensions distinct:
@@ -171,7 +173,7 @@ MetadataDatabaseInspection
 ├── ObservedFacts
 ├── CandidateStates
 ├── SuggestedState?
-├── Reasons
+├── Findings
 └── RequiresAuthorizedDecision
 ~~~
 
@@ -190,7 +192,7 @@ SuggestedState:
 - Uninitialized
 ~~~
 
-An administrator may deliberately select `Invalid`, for example because the file is a development/test artifact that GameSaveSync must never adopt or initialize.
+An administrator may deliberately select `Invalid` when the observed facts do not prove application ownership and operator context says the resource must not be adopted or initialized.
 
 A different shape may suggest `Invalid` first:
 
@@ -209,6 +211,8 @@ SuggestedState:
 The exact candidate set remains project-specific. The important invariant is that impossible states such as `Ready`, `MigrationRequired` or `TooNew` are not offered when the observed evidence cannot support them.
 
 The administrator can contradict the suggestion only inside the candidate set.
+
+Do not add `Invalid` to every otherwise-proven state merely as a generic rejection button. When application identity/schema compatibility is already proven, choosing another resource is a configuration decision, not a contradictory lifecycle classification.
 
 The selected classification does not erase the facts and does not itself mutate the database.
 

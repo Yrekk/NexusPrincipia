@@ -27,7 +27,7 @@ Elle couvre selon le projet :
 - transport/réseau ;
 - sécurité ;
 - résilience et récupération ;
-- modèle inspection → classification proposée → choix autorisé lorsque des faits techniques admettent plusieurs interprétations légitimes ;
+- modèle inspection → findings structurés → classification proposée → choix autorisé lorsque des faits techniques admettent plusieurs interprétations légitimes ;
 - lifecycle/readiness de la persistance lorsque la base porte une autorité importante ;
 - configuration ;
 - stratégie de tests ;

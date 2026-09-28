@@ -23,4 +23,5 @@ Do not maintain copied versions of the same generic development document in seve
 
 - [Debug & observability](architecture/debug-observability.md)
 - [Inspection, classification and authorized choice](architecture/inspection-classification-authority.md)
+- [Structured inspection findings](architecture/structured-inspection-findings.md)
 - [Database lifecycle, readiness and explicit administrative choice](architecture/database-lifecycle-readiness.md)

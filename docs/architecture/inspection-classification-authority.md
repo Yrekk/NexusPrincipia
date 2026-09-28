@@ -50,7 +50,7 @@ InspectionResult
 ├── ObservedFacts
 ├── CandidateStates
 ├── SuggestedState?
-├── Reasons / evidence
+├── Findings / evidence
 └── RequiresAuthorizedDecision
 ~~~
 
@@ -99,6 +99,10 @@ not offered:
 ~~~
 
 The administrator may disagree with the suggestion, but cannot choose a classification that contradicts facts or bypasses a blocking safety invariant.
+
+### Findings / evidence
+
+Explanations follow [Structured inspection findings](structured-inspection-findings.md): stable machine-readable codes plus structured details. Free-form UI sentences are not the authoritative application contract.
 
 ### SuggestedState
 
@@ -344,6 +348,7 @@ What is shared is the architecture:
 ~~~text
 facts
 → compatible interpretations
+→ structured findings
 → suggestion with evidence
 → authorized choice when needed
 → constrained capabilities
