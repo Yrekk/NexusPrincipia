@@ -106,6 +106,29 @@ Le startup peut :
 
 Le startup ne doit pas transformer une opération administrative en effet de bord invisible.
 
+### Plusieurs réponses légitimes = décision hors entrypoint
+
+Lorsqu'un état peut conduire à plusieurs actions valides selon le contexte opérationnel, l'entrypoint ne doit pas choisir seul.
+
+Exemple :
+
+~~~text
+DB absente / incompatible / en cours d'opération
+→ initialiser ?
+→ migrer ?
+→ restaurer ?
+→ rester en mode minimal ?
+→ attendre parce qu'une maintenance externe est en cours ?
+~~~
+
+Coder une réponse automatique dans `Program.cs` ou `main.py` reviendrait à figer une hypothèse de contexte que l'entrypoint ne possède pas.
+
+La règle est donc :
+
+> **un entrypoint peut observer l'état ; il ne tranche pas silencieusement entre plusieurs actions administratives légitimes.**
+
+Cette décision appartient à un use case/service réutilisable, invoqué par un acteur ou une politique explicitement autorisée : Admin, CLI, opérateur humain ou futur agent IA.
+
 Pour les opérations destructives ou sensibles, préférer :
 
 ~~~text
