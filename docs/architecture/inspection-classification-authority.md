@@ -242,25 +242,65 @@ The administrator may know context that is intentionally not inferable:
 
 The architecture must permit that context to influence classification **without permitting it to falsify technical facts**.
 
-## 7. A previous choice must not survive materially different facts blindly
+## 7. Durable classifications are control-plane state
 
-An authorized classification is made against a particular inspection context.
+An authorized classification may need to survive process restarts. When it does, persist the decision **outside the resource being inspected**.
 
-If material observed facts change, the system must re-inspect and must not blindly reuse an older decision.
+This is especially important when the resource is ambiguous, rejected, foreign, invalid or not yet adopted. Writing the decision into that same resource would already treat it as trusted application authority.
 
-Possible implementations include:
+Conceptually:
 
-- inspection revision;
-- resource fingerprint;
-- relevant fact hash;
-- explicit decision expiry;
-- comparison of the facts that justified the candidate set.
+~~~text
+AuthorizedClassification
+├── resource identity
+├── inspection identity / revision
+├── relevant facts fingerprint or equivalent
+├── candidate states at decision time
+├── suggested state
+├── selected state
+├── actor
+├── timestamp
+└── optional rationale
+~~~
+
+The exact persistence mechanism is project-specific. It may initially be an application-owned control-plane store and may later move behind Nexus if Nexus acquires a real cross-application runtime responsibility.
+
+The invariant is:
+
+> **A durable administrative decision belongs to trusted control-plane state, not to the ambiguous resource whose meaning is being decided.**
+
+Do not require a micro-service merely to satisfy this rule. Shared semantics + local trusted persistence remain valid until Nexus actually owns a centralized runtime responsibility.
+
+### 7.1 Reusing a persisted classification
+
+A persisted classification is authoritative only for the inspection context that was reviewed.
+
+Before reusing it, the application must establish that the relevant context is still compatible. Depending on the project, this may include:
+
+- the same resource identity;
+- the same inspection/revision identity;
+- the same relevant-facts fingerprint;
+- a still-compatible candidate-state set;
+- a selected state that is still permitted by current policy.
+
+If material facts or classification policy change, the system must re-inspect and must not blindly reuse the old decision.
+
+Possible invalidation signals include:
+
+- resource content or metadata changed materially;
+- migration/schema evidence changed;
+- ownership/adoption evidence changed;
+- the candidate-state set changed;
+- the previously selected state is no longer compatible;
+- the classification contract/policy changed in a way that affects the decision.
 
 The mechanism is project-specific.
 
 The invariant is:
 
-> **A human choice is authoritative for the context that was reviewed, not for an arbitrarily changed resource.**
+> **A human choice is authoritative for the context that was reviewed, not for an arbitrarily changed resource or a materially changed classification contract.**
+
+A stale decision may remain available for audit/history, but it must not silently restore authority.
 
 ## 8. Auditability
 
