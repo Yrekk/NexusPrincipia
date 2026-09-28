@@ -45,6 +45,7 @@ Start with [docs/README.md](docs/README.md).
 ### Operations / architecture
 
 - [Debug & observability reference](docs/architecture/debug-observability.md)
+- [Audit identifiers & human-readable labels](docs/architecture/audit-identifiers-and-labels.md)
 - [Inspection, classification & authorized choice](docs/architecture/inspection-classification-authority.md)
 - [Structured inspection findings](docs/architecture/structured-inspection-findings.md)
 - [Database lifecycle & readiness](docs/architecture/database-lifecycle-readiness.md)
