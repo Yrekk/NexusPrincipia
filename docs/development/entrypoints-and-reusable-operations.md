@@ -225,7 +225,25 @@ entrypoint
 
 La règle porte sur la responsabilité, pas sur un framework particulier.
 
-## 9. Database lifecycle / readiness
+## 9. Inspection / classification / autorité
+
+Pour toute capacité qui découvre des faits puis doit les interpréter avant d'autoriser des actions, appliquer la référence [Inspection, classification and authorized choice](../architecture/inspection-classification-authority.md).
+
+En particulier :
+
+~~~text
+entrypoint / inspector
+→ observe
+→ propose des classifications compatibles
+→ explique
+→ ne confirme pas à la place de l'Admin
+~~~
+
+Une suggestion de startup ne devient donc jamais, par elle-même, une décision administrative.
+
+Les adapters Admin, CLI et IA doivent recevoir les mêmes faits, candidats et garde-fous.
+
+## 10. Database lifecycle / readiness
 
 For database-backed applications, apply the shared [Database lifecycle, readiness and explicit administrative choice](../architecture/database-lifecycle-readiness.md) reference.
 

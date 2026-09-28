@@ -27,6 +27,7 @@ Elle couvre selon le projet :
 - transport/réseau ;
 - sécurité ;
 - résilience et récupération ;
+- modèle inspection → classification proposée → choix autorisé lorsque des faits techniques admettent plusieurs interprétations légitimes ;
 - lifecycle/readiness de la persistance lorsque la base porte une autorité importante ;
 - configuration ;
 - stratégie de tests ;
@@ -129,7 +130,20 @@ Dès H0, appliquer la convention [Entrypoints et opérations administratives ré
 
 Un `Program.cs`, `main.py` ou équivalent ne doit pas devenir le propriétaire d'une capacité qui pourrait ensuite être appelée depuis l'Admin, une CLI ou un agent IA.
 
-## 9. Lifecycle / readiness de la persistance
+## 9. Inspection, classification et autorité
+
+Lorsqu'une découverte technique peut mener à plusieurs interprétations légitimes et que cette classification influence les capacités ou mutations proposées, intégrer dès la ST le modèle partagé [Inspection, classification and authorized choice](../architecture/inspection-classification-authority.md) :
+
+- conserver les faits observés séparément de leur interprétation ;
+- calculer uniquement les états candidats compatibles ;
+- proposer un état avec ses raisons sans en faire une autorité ;
+- laisser l'acteur autorisé choisir parmi les candidats sûrs ;
+- dériver ensuite les capacités depuis les faits + le choix + la politique ;
+- revalider la décision si les faits matériels changent.
+
+Cette règle est générique : elle ne concerne pas uniquement les bases de données.
+
+## 10. Lifecycle / readiness de la persistance
 
 Pour une application où la base porte une autorité importante, intégrer dès la ST le modèle partagé [Database lifecycle, readiness and explicit administrative choice](../architecture/database-lifecycle-readiness.md) :
 
@@ -139,7 +153,7 @@ Pour une application où la base porte une autorité importante, intégrer dès 
 - posture fail-closed ;
 - stratégie de recovery.
 
-## 10. Règle finale
+## 11. Règle finale
 
 La ST et le prompt maître ne servent pas à créer de la bureaucratie.
 

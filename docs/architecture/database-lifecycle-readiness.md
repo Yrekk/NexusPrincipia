@@ -11,6 +11,8 @@ The core rule is:
 
 The application must not collapse those three concerns into one automatic startup decision.
 
+When the observed facts are compatible with more than one legitimate lifecycle classification, also apply [Inspection, classification and authorized choice](inspection-classification-authority.md). In that case the inspector may suggest a state, but the effective classification remains an authorized choice constrained by the facts.
+
 ## 1. Separate three concepts
 
 A robust runtime keeps these dimensions distinct:
@@ -157,6 +159,62 @@ It may inspect:
 - project-specific integrity checks.
 
 It must not initialize, migrate, restore, bind or repair the database as a side effect.
+
+### 4.1 Ambiguous lifecycle classification
+
+Some lifecycle states cannot always be proven from provider facts alone.
+
+For those cases, expose the evidence and the safe choice surface explicitly:
+
+~~~text
+MetadataDatabaseInspection
+├── ObservedFacts
+├── CandidateStates
+├── SuggestedState?
+├── Reasons
+└── RequiresAuthorizedDecision
+~~~
+
+Example:
+
+~~~text
+existing valid SQLite
++ no GameSaveSync migration history
++ no conflicting tables
+
+CandidateStates:
+- Uninitialized
+- Invalid
+
+SuggestedState:
+- Uninitialized
+~~~
+
+An administrator may deliberately select `Invalid`, for example because the file is a development/test artifact that GameSaveSync must never adopt or initialize.
+
+A different shape may suggest `Invalid` first:
+
+~~~text
+existing valid SQLite
++ no GameSaveSync migration history
++ unrelated/user tables present
+
+CandidateStates:
+- project-defined safe compatible states only
+
+SuggestedState:
+- Invalid
+~~~
+
+The exact candidate set remains project-specific. The important invariant is that impossible states such as `Ready`, `MigrationRequired` or `TooNew` are not offered when the observed evidence cannot support them.
+
+The administrator can contradict the suggestion only inside the candidate set.
+
+The selected classification does not erase the facts and does not itself mutate the database.
+
+If `Invalid` is selected for an existing file, GameSaveSync or another project may conclude that no usable authoritative database is available and may offer a separate initialization workflow. That workflow must not silently overwrite the existing invalid resource.
+
+If the relevant database facts later change materially, re-inspect and require a fresh classification where ambiguity still exists.
 
 ## 5. Database readiness is not application readiness
 
@@ -346,7 +404,11 @@ Do not test only the happy path.
 Tests should cover:
 
 ~~~text
-observed state
+observed facts / state
+×
+candidate + suggested classification where applicable
+×
+authorized selected classification where applicable
 ×
 exposed/allowed action
 ×
@@ -358,6 +420,9 @@ final reinspection
 Examples:
 
 - Missing reports Missing without creating a database.
+- ambiguous evidence exposes only fact-compatible candidate states.
+- an Admin may override the suggestion with another compatible classification without changing observed facts.
+- classification/confirmation alone performs no mutation.
 - MigrationRequired does not invoke initialization.
 - Initialize does not run against an already-migrated database.
 - Migrate does not run against Missing/Uninitialized.
@@ -391,6 +456,7 @@ If a future project authorizes autonomous operations, that autonomy must still u
 
 Shared here:
 
+- the generic inspection/classification/authorized-choice model is inherited from the shared inspection reference;
 - separation of observation, readiness and action;
 - explicit state vocabulary baseline;
 - fail-closed posture;
