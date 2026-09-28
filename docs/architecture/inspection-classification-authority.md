@@ -302,6 +302,30 @@ The invariant is:
 
 A stale decision may remain available for audit/history, but it must not silently restore authority.
 
+### 7.2 Recording a decision against a fresh inspection
+
+When the operator selects a classification from an inspection shown earlier, the application must not assume that the inspected context is still current.
+
+Prefer an optimistic-concurrency style contract:
+
+~~~text
+inspection shown to actor
+→ ExpectedInspectionRevision = ABC
+→ actor selects candidate
+→ application re-inspects
+→ current revision still ABC ?
+   ├── yes → persist AuthorizedClassification
+   └── no  → reject stale decision and return fresh inspection
+~~~
+
+This protects against a time-of-check/time-of-use race where the resource changes between display and confirmation.
+
+The invariant is:
+
+> **A durable human classification is recorded only against the fresh inspection context that is actually being authorized.**
+
+Adapters must pass the expected revision they presented to the actor. They must not bypass reinspection merely because the actor already confirmed an older screen.
+
 ## 8. Auditability
 
 When a classification affects authority, mutation availability or recovery behavior, preserve enough information to explain the decision later.
@@ -316,6 +340,19 @@ Prefer recording:
 - actor;
 - time;
 - optional reason when the actor overrides the suggestion.
+
+For operationally important identifiers, it is valid and often useful to preserve a human-readable label snapshot next to the stable identifier:
+
+~~~text
+ActorReference = "user:190992294"
+ActorLabel     = "Damien Ferrari"
+~~~
+
+The identifier remains the authority for identity, joins and authorization. The label is redundant diagnostic context only and must never become a key or source of authority.
+
+Prefer snapshot semantics for audit records: if the display name changes later, historical records may retain the label that was visible when the event happened.
+
+The same pattern may be used for resources, tenants, machines, profiles or other entities when it materially improves incident investigation.
 
 This is especially important for destructive, recovery, ownership and adoption workflows.
 
