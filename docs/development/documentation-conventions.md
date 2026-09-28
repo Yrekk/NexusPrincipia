@@ -82,7 +82,11 @@ Si une décision est remplacée, documenter explicitement la supersession au lie
 
 ## 6. Documentation de tranche
 
-Une tranche maintient objectif, scope, hors scope, décisions, état, tests, commits, limites et prochaine action.
+La documentation suit la tranche fonctionnelle, pas chacun de ses checkpoints internes.
+
+Elle maintient objectif, scope, décisions structurantes, état global, validations significatives, limites et prochaine action.
+
+Éviter de transformer chaque sous-étape technique en longue sous-section lorsque le code, les commentaires et les tests suffisent déjà à l'expliquer.
 
 ## 7. Documentation transverse vs locale
 
@@ -97,3 +101,5 @@ Lorsque cela facilite la navigation, faire refléter l'organisation source dans 
 ## 9. Documentation périmée
 
 Une documentation décrivant une architecture qui n'existe plus est un bug. La mettre à jour dans la même tranche que le changement.
+
+La conversation de développement n'a pas vocation à reproduire toute la documentation : les détails durables doivent vivre dans le code/commentaires/tests/README/ADR appropriés.
