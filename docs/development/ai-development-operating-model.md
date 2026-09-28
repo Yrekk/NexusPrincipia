@@ -12,10 +12,31 @@ Le but est de combiner :
 
 - l'expérience et les décisions du développeur ;
 - la capacité de l'IA à analyser, produire, tester, documenter et refactorer rapidement ;
-- des étapes suffisamment petites pour rester compréhensibles et réversibles ;
-- une validation humaine réelle avant de considérer une tranche comme acquise.
+- une tranche fonctionnelle suffisamment large pour faire avancer réellement le produit ;
+- des checkpoints techniques internes suffisamment petits pour garder le code testable et réversible ;
+- une validation humaine réelle avant de considérer la tranche comme acquise.
 
-Le code peut être largement délégué. La direction du produit, les arbitrages, la compréhension de l'architecture et l'acceptation finale ne le sont pas.
+Le code peut être largement délégué. La direction du produit, les arbitrages structurants, la compréhension de l'architecture et l'acceptation finale ne le sont pas.
+
+### Principe de fluidité
+
+La méthode doit protéger le projet **sans devenir le projet**.
+
+**Une tranche fonctionnelle correspond à une session de développement dédiée.** Exemple : H2 dans une session, H3 dans une nouvelle session.
+
+À l'intérieur de cette session, l'assistante peut découper librement le travail en checkpoints techniques internes pour coder, tester et committer proprement. Ces checkpoints ne deviennent pas des mini-tranches et ne déclenchent pas de nouvelle session.
+
+~~~text
+session dédiée à H2
+→ plusieurs checkpoints techniques internes
+→ tests et corrections continus
+→ pauses seulement sur vraies décisions
+→ revue de code ciblée sur les points tricky
+→ validation / acceptation de H2
+→ nouvelle session dédiée à H3
+~~~
+
+La rigueur reste forte ; la cérémonie reste proportionnée.
 
 ## 2. Gouvernance
 
@@ -87,42 +108,53 @@ Avant un travail substantiel :
 
 Si le développeur annonce un push, re-vérifier le HEAD avant toute nouvelle écriture.
 
-## 5. Travail par tranches
 
-Une tranche doit être limitée à un objectif principal, compréhensible, testable et documentable.
+## 5. Travail par tranche-session et checkpoints internes
 
-Une bonne idée hors scope va au backlog. Elle n'est pas codée uniquement parce qu'elle est intéressante.
+Une tranche est une unité fonctionnelle visible et cohérente : serveur central, agent, pipeline de transfert, onboarding, module Admin, etc.
 
-~~~text
-checksum utile pour la résilience
-≠
-checksum à coder pendant le bootstrap
-~~~
+**Chaque tranche dispose de sa propre session de développement.**
 
-Le bon moment compte autant que la bonne idée.
+Une tranche peut contenir plusieurs sous-problèmes techniques tant qu'ils concourent au même objectif fonctionnel et architectural.
+
+L'assistante découpe la tranche en checkpoints techniques internes pour :
+
+- limiter la taille des changements ;
+- garder la CI utile ;
+- corriger tôt ;
+- éviter un commit monolithique ;
+- préserver une reprise claire si la session devient longue.
+
+Ces checkpoints ne nécessitent **pas par défaut** :
+
+- une acceptation explicite du développeur ;
+- une revue pédagogique complète ;
+- une validation locale séparée ;
+- une clôture documentaire autonome ;
+- une nouvelle session.
+
+L'assistante suspend l'implémentation pour arbitrage seulement lorsqu'il existe une vraie décision : alternative architecturale crédible, risque de perte/corruption, changement difficilement réversible, rupture de contrat partagé, extension réelle du scope ou information métier que seule la personne peut fournir.
+
+Une bonne idée hors scope va au backlog. Le bon moment compte autant que la bonne idée.
+
 
 ## 6. Protocole avant implémentation
 
-Avant une tranche significative, présenter :
+Au début de la session dédiée à une tranche significative, cadrer seulement ce qui est nécessaire pour partir dans la bonne direction :
 
-- **Objectif** — ce que la tranche résout ;
-- **Ce qui sera construit** — fichiers, responsabilités et comportements ;
-- **Architecture** — frontières nécessaires pour démarrer sans enfermer le projet ;
-- **Points critiques** — invariants, sécurité, persistance, compatibilité, effets de bord ;
-- **Tests** — ce qui prouvera la correction ;
-- **Décisions bloquantes** — uniquement celles qui doivent réellement être arbitrées avant de coder.
+- objectif de la tranche ;
+- frontières architecturales ;
+- principaux risques/invariants ;
+- vraies décisions bloquantes ;
+- critères de réussite.
 
-Le cadrage préalable doit permettre de construire dans la bonne direction, sans
-chercher à résoudre théoriquement tous les choix possibles avant d'avoir du code
-concret à examiner.
+Ne pas transformer ce cadrage en spécification exhaustive si le code et les tests permettront de préciser le reste plus vite.
 
-Pour une décision architecturale non triviale et irréversible ou coûteuse à
-reprendre, attendre la validation du développeur avant l'implémentation.
+Une fois la tranche lancée, ne pas recommencer ce protocole pour chaque checkpoint interne.
 
-Les questions pédagogiques de type comparaison / compromis sont de préférence
-posées **pendant la revue après validation technique**, lorsque le développeur
-peut raisonner sur une implémentation réelle plutôt que deviner le raisonnement
-de l'assistante.
+Pour une décision architecturale non triviale et irréversible ou coûteuse à reprendre, attendre la validation du développeur avant l'implémentation.
+
+Les questions pédagogiques sont de préférence posées pendant la revue de code, sur une implémentation réelle.
 
 ## 7. Implémentation
 
@@ -147,7 +179,7 @@ Lorsque l'IA dispose d'un accès GitHub autorisé et que le développeur lui con
 ## 8. Revue de code et d'architecture ensemble
 
 La revue partagée est une **étape obligatoire avant l'acceptation d'une tranche
-de développement**.
+fonctionnelle**. Elle n'est pas exigée après chaque checkpoint interne.
 
 Elle intervient après une première implémentation et sa validation technique :
 
@@ -165,16 +197,24 @@ Le développeur n'a pas besoin de relire mécaniquement chaque ligne. La revue
 doit lui faire parcourir les zones importantes et reconstruire la carte mentale
 du changement.
 
-L'assistante présente au minimum :
+La revue privilégie le **code réellement intéressant à apprendre** plutôt qu'un compte rendu exhaustif.
 
-- les fichiers réellement modifiés ;
-- la responsabilité de chacun ;
-- le flux principal avant / après ;
-- les dépendances introduites ou déplacées ;
-- les invariants protégés par les tests ;
+L'assistante guide le développeur vers quelques fichiers ou méthodes importants et explique notamment :
+
+- un mécanisme tricky ;
+- une frontière architecturale importante ;
+- un invariant de sécurité ;
+- un ordre d'opérations non évident ;
+- une API ou un compromis qui mérite d'être retenu ;
 - le point où chercher si le comportement casse demain.
 
-### 8.1 Questions de choix plutôt que restitution
+Les changements triviaux peuvent être résumés sans revue ligne par ligne.
+
+### 8.1 Questions utiles, pas questionnaires
+
+La revue ne doit pas devenir une série de questions de restitution. Quelques questions ciblées valent mieux qu'un questionnaire systématique.
+
+Les questions servent à faire raisonner sur un vrai morceau de code, une frontière ou un compromis.
 
 La revue ne doit pas principalement demander :
 
@@ -257,12 +297,11 @@ tranche N : implémentation
 
 ### 8.4 Proportionnalité
 
-Cette étape s'applique à chaque développement cohérent, mais sa profondeur reste
-proportionnée au changement.
+La revue complète s'applique à la tranche fonctionnelle. Les checkpoints internes n'exigent pas une mini-revue séparée.
 
-Une micro-correction peut recevoir une revue de quelques phrases. Une nouvelle
-boundary de persistence, un mécanisme de recovery ou une architecture réseau
-méritent une vraie discussion de compromis.
+Pendant la tranche, l'assistante peut néanmoins signaler immédiatement un point tricky ou structurant lorsqu'il est utile de le voir dans le code au moment où il apparaît.
+
+Une micro-correction peut être résumée en une phrase. Une nouvelle boundary de persistence, un mécanisme de recovery ou une architecture réseau mérite une vraie discussion.
 
 ## 9. Code lisible et commentaires
 
@@ -301,9 +340,11 @@ Règles :
 - analyser un échec CI même si le poste local est vert ;
 - une CI verte seule ne vaut pas acceptation de tranche.
 
-## 11. Validation d'une tranche
+## 11. Validation d'une tranche fonctionnelle
 
-Une tranche est validée seulement si :
+Les checkpoints internes peuvent être techniquement verts sans nécessiter une acceptation formelle séparée.
+
+Une tranche fonctionnelle est validée seulement si :
 
 - son scope accepté est implémenté ;
 - les tests pertinents sont verts ;
@@ -359,13 +400,17 @@ Voir [Debug & observability](../architecture/debug-observability.md).
 
 ## 15. Documentation et passation
 
-Après une étape significative, maintenir :
+Maintenir la documentation lorsqu'une évolution change réellement l'architecture, le contrat, les invariants ou l'état de reprise.
 
-- état de la tranche ;
-- décisions ;
-- tests exécutés ;
+Ne pas produire une clôture documentaire complète pour chaque checkpoint interne.
+
+Au minimum, garder suffisamment d'information pour reprendre :
+
+- état de la tranche fonctionnelle ;
+- décisions structurantes ;
+- validations significatives ;
 - limites connues ;
-- branche/commit de référence ;
+- branche/commit de référence lorsque utile ;
 - prochaine action exacte.
 
 Voir [Session continuity](session-continuity.md).
@@ -391,24 +436,21 @@ cadrage suffisant
 
 ## 17. Boucle cible
 
-Le cycle standard de chaque développement est :
+Le cycle standard est :
 
 ~~~text
-besoin / expérience du développeur
+nouvelle session dédiée à la tranche
 → analyse de l'existant
-→ cadrage de la tranche
-→ arbitrage des seules décisions bloquantes
-→ implémentation par petite tranche
-→ commit/push lorsque autorisé
-→ tests + build/lint + smoke pertinents
-→ corrections jusqu'à état techniquement vert
-→ revue de code ensemble
-→ discussion des choix / alternatives / compromis
+→ cadrage léger
+→ arbitrage des seules décisions réellement bloquantes
+→ implémentation continue par checkpoints internes
+→ tests / CI / corrections en continu
+→ revue de code ciblée sur les points tricky et structurants
 → correction structurelle éventuelle
-→ revalidation si le code change
-→ acceptation explicite du développeur
-→ documentation + handoff à jour
-→ tranche suivante
+→ validation locale / smoke pertinents
+→ acceptation explicite de la tranche fonctionnelle
+→ documentation / handoff à jour
+→ nouvelle session pour la tranche suivante
 ~~~
 
 La revue intervient volontairement **avant** la fermeture de la tranche. Elle
