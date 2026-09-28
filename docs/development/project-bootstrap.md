@@ -68,7 +68,8 @@ Le premier jalon crée surtout des frontières :
 - configuration minimale ;
 - documentation ;
 - conventions Git ;
-- host technique si la frontière réseau est déjà décidée.
+- host technique si la frontière réseau est déjà décidée;
+- entrypoint minimal : composition/bootstrap uniquement, les capacités réutilisables Admin/CLI/IA vivent dans des services/use cases.
 
 Éviter d'ajouter de la logique métier spéculative uniquement pour « remplir » le projet.
 
@@ -121,7 +122,13 @@ implémenter
 Cette revue doit être proportionnée, mais ne doit pas disparaître au motif que
 les tests sont verts.
 
-## 8. Règle finale
+## 8. Entrypoints
+
+Dès H0, appliquer la convention [Entrypoints et opérations administratives réutilisables](entrypoints-and-reusable-operations.md).
+
+Un `Program.cs`, `main.py` ou équivalent ne doit pas devenir le propriétaire d'une capacité qui pourrait ensuite être appelée depuis l'Admin, une CLI ou un agent IA.
+
+## 9. Règle finale
 
 La ST et le prompt maître ne servent pas à créer de la bureaucratie.
 

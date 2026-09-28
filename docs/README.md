@@ -16,6 +16,7 @@ Do not maintain copied versions of the same generic development document in seve
 - [Project bootstrap](development/project-bootstrap.md)
 - [Session continuity](development/session-continuity.md)
 - [Documentation conventions](development/documentation-conventions.md)
+- [Entrypoints and reusable administrative operations](development/entrypoints-and-reusable-operations.md)
 - [Language-specific conventions](development/languages/)
 
 ## Architecture / operations references

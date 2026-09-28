@@ -50,7 +50,11 @@ La logique métier ne dépend pas inutilement d'EF Core, ASP.NET, filesystem ou 
 
 Assembler les dépendances concrètes au bord de l'application.
 
-Éviter service locator, accès global statique aux services et logique métier dans Program.cs.
+Éviter service locator, accès global statique aux services et logique métier dans `Program.cs`.
+
+Si une action pourrait devenir une commande Admin, CLI ou un tool d'agent IA, `Program.cs` ne doit contenir que l'adapter/l'appel vers le use case ou service réutilisable.
+
+Voir [Entrypoints and reusable administrative operations](../entrypoints-and-reusable-operations.md).
 
 ## EF Core
 

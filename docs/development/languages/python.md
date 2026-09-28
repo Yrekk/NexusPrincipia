@@ -63,6 +63,12 @@ Valider la configuration au bootstrap : champs obligatoires, formats, IDs, chemi
 
 Un mauvais JSON/.env/config ne doit pas produire une panne tardive uniquement sur une machine.
 
+## Entrypoint
+
+`main.py` / `main()` reste un bootstrap/adapter. Si une action peut être utile à une commande Admin, une CLI ou un futur tool d'agent IA, son implémentation appartient à un service/use case réutilisable et non à `main.py`.
+
+Voir [Entrypoints and reusable administrative operations](../entrypoints-and-reusable-operations.md).
+
 ## Ruff
 
 Ruff est la référence actuelle pour Claviger. Les règles restent définies par le pyproject du projet.
