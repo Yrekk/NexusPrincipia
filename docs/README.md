@@ -15,6 +15,8 @@ Do not maintain copied versions of the same generic development document in seve
 - [AI-assisted development operating model](development/ai-development-operating-model.md)
 - [Project bootstrap](development/project-bootstrap.md)
 - [Session continuity](development/session-continuity.md)
+- [Context selection across Git, Drive and sessions](development/context-selection.md)
+- [Failure-mode and recovery validation](development/failure-mode-validation.md)
 - [Documentation conventions](development/documentation-conventions.md)
 - [Entrypoints and reusable administrative operations](development/entrypoints-and-reusable-operations.md)
 - [Language-specific conventions](development/languages/)

@@ -30,7 +30,7 @@ Elle couvre selon le projet :
 - modèle inspection → findings structurés → classification proposée → choix autorisé lorsque des faits techniques admettent plusieurs interprétations légitimes ;
 - lifecycle/readiness de la persistance lorsque la base porte une autorité importante ;
 - configuration ;
-- stratégie de tests ;
+- stratégie de tests, y compris scénarios de panne reproductibles et validations live contrôlées lorsque pertinentes (voir [Validation des défaillances](failure-mode-validation.md)) ;
 - déploiement ;
 - roadmap en tranches ;
 - décisions encore ouvertes.
