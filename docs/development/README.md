@@ -7,6 +7,8 @@ This folder is the shared source of truth for development practices used across 
 - [AI-assisted development operating model](ai-development-operating-model.md) — one functional tranche per dedicated session, with fluid internal checkpoints, continuous testing and a targeted code/architecture review before tranche acceptance.
 - [Project bootstrap](project-bootstrap.md) — start non-trivial projects from an established Solution Technique and a dedicated master prompt.
 - [Session continuity](session-continuity.md) — handoff rules and inter-session recovery.
+- [Context selection](context-selection.md) — charge only relevant cross-project, Drive and project context; keep project handoffs authoritative.
+- [Failure-mode validation](failure-mode-validation.md) — safe, reproducible fault injection, real-world tests and recovery invariants.
 - [Documentation conventions](documentation-conventions.md) — comments, local READMEs, ADRs and living documentation.
 - [Entrypoints and reusable administrative operations](entrypoints-and-reusable-operations.md) — keep startup files as adapters/composition roots; reusable Admin/CLI/AI capabilities live in services/use cases.
 - [Language-specific conventions](languages/) — stack-specific guidance.
