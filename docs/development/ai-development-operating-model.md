@@ -93,6 +93,8 @@ En cas de contradiction :
 
 Une contradiction importante doit être signalée, pas corrigée silencieusement.
 
+Pour choisir les sources pertinentes (Nexus, expérience documentée sur Drive, dépôt, tranche), voir [Sélection du contexte](context-selection.md). Cela ne remplace ni la vérification du HEAD ni le handoff de chaque projet.
+
 ## 4. Démarrage d'une session
 
 Avant un travail substantiel :
@@ -339,6 +341,18 @@ Règles :
 - expliquer ce que garantit un nouveau test ;
 - analyser un échec CI même si le poste local est vert ;
 - une CI verte seule ne vaut pas acceptation de tranche.
+- pour tout risque de défaillance prévisible et reproductible, définir un scénario avec état initial, invariant, injection contrôlée, observables, état final et reprise ; **le tester en live lorsqu'un environnement sûr le permet**, sans sacrifier les tests automatisés ;
+- distinguer explicitement test simulé, intégration et panne réellement provoquée ; noter les cas non vérifiés ;
+- protéger les données réelles, les services partagés et les opérations sensibles : pas de panne imposée sur production sans validation humaine et procédure de retour à un état sûr.
+
+Référence transverse : [Validation contrôlée des défaillances et de la reprise](failure-mode-validation.md). Les scénarios et résultats spécifiques restent dans le dépôt de l'application.
+
+### Modalités de collaboration
+
+- **Livraison prioritaire :** l'assistante peut prendre l'exécution du code, avec échanges concentrés sur décisions, invariants, tests et revue ; ne pas ralentir artificiellement la tranche par des exercices pédagogiques.
+- **Mode pédagogique :** le développeur propose davantage conception et solutions ; l'assistante les évalue objectivement et laisse un espace de raisonnement avant de comparer alternatives et tests.
+
+Le choix du mode change la répartition du travail, **pas les exigences de sécurité, de résilience ni l'acceptation humaine**. Voir [Sélection du contexte](context-selection.md).
 
 ## 11. Validation d'une tranche fonctionnelle
 
