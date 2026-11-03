@@ -38,6 +38,8 @@ Start with [docs/README.md](docs/README.md).
 - [AI-assisted development operating model](docs/development/ai-development-operating-model.md)
 - [Project bootstrap: technical solution + master prompt](docs/development/project-bootstrap.md)
 - [Session continuity and handoff](docs/development/session-continuity.md)
+- [Selective context loading (Git, Drive, sessions)](docs/development/context-selection.md)
+- [Controlled failure-mode and recovery validation](docs/development/failure-mode-validation.md)
 - [Documentation conventions](docs/development/documentation-conventions.md)
 - [C# / .NET conventions](docs/development/languages/csharp-dotnet.md)
 - [Python conventions](docs/development/languages/python.md)
