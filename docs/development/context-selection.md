@@ -56,6 +56,9 @@ Le mode pédagogique ne réduit pas l'exigence de tests. Le mode livraison n'int
 
 ## 5. Cartographie Drive à construire plus tard
 
+**Évolution décidée le 25 novembre 2026 :** NexusPrincipia doit progressivement fournir un accès dynamique aux données contextuelles structurées, complémentaire de Git. Voir [la décision d'architecture](../architecture/ai-dynamic-data-access.md). Tant que ce mécanisme n'est pas implémenté et validé, les règles actuelles de sélection des sources restent applicables.
+
+
 Prévoir **un index privé**, plutôt que lister ici les documents personnels :
 
 - catégorie, rôle, sujet, résumé court, mots-clés de déclenchement ;
