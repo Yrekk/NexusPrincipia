@@ -52,6 +52,10 @@ Start with [docs/README.md](docs/README.md).
 - [Structured inspection findings](docs/architecture/structured-inspection-findings.md)
 - [Database lifecycle & readiness](docs/architecture/database-lifecycle-readiness.md)
 
+### AI data access — next design priority
+
+- [Dynamic AI data access decision](docs/architecture/ai-dynamic-data-access.md) — generic read interface, authorized schema discovery and server-side access policy; design pending.
+
 ## Current scope
 
 For now, this repository is both:
@@ -59,4 +63,4 @@ For now, this repository is both:
 - the design anchor for the future NexusPrincipia backend;
 - the authoritative home for shared engineering conventions already used by active projects.
 
-Backend implementation will be introduced incrementally when concrete Admin use cases are ready rather than by pre-building speculative infrastructure.
+The next major design priority is the dynamic AI data access interface and contextual data ingestion, before the bot Admin interface. Backend implementation remains incremental and subject to a dedicated technical design.
